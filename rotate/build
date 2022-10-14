@@ -1,0 +1,21 @@
+#!/usr/bin/bash
+
+SRC="Fixrotation"
+
+#ARG="./94FE/94FE-0050.png ./94FE/94FE-0051.png"
+#ARG="./D872/D872-0000.png ./D872/D872-0001.png"
+#ARG="./F8DD/F8DD-0014.png ./F8DD/F8DD-0015.png"
+#ARG="./6feb-A9C2/A9C2-0000.png ./6feb-A9C2/A9C2-0001.png"
+#ARG="./6feb-B30E/B30E-0000.png ./6feb-B30E/B30E-0001.png"
+ARG="./6feb-67BA/67BA-0000.png ./6feb-67BA/67BA-0001.png"
+
+
+echo "build..."
+javac ${SRC}.java
+echo "run..."
+java ${SRC} ${ARG}
+rm *.class
+
+
+# @source: https://github.com/haraldk/TwelveMonkeys
+# required to read all tiff

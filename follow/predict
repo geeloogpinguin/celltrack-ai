@@ -1,0 +1,4 @@
+#!/usr/bin/bash
+
+python do_predict.py ../res ../image ../followed
+

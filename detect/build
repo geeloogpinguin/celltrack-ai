@@ -1,0 +1,72 @@
+#!/usr/bin/bash
+
+# to be ran from docker instance
+# usage: build <DST>
+# where DST = train or predict
+
+
+BASE="/home/bart/dockhome/0detect"
+
+DST="${1}"
+if [ -z ${DST} ] ; then
+	echo "Usage: build <destination>"
+	echo "Where destination: train or predict"
+	echo "Example: build train"
+	exit 1
+fi
+
+# generate datetime for build dir name
+NOW=$(date +%Y%m%d-%H%M%S)
+
+if [ ${DST} == "train" ] ; then
+	echo "training..."
+	TRG="${BASE}/${NOW}-train"
+	echo "TRG = ${TRG}"
+	mkdir -p ${TRG}
+	
+	# populate build dir
+	cp -r mrcnn ${TRG}
+	cp good_nucleus.py ${TRG}
+	cp nucleus.py ${TRG}
+	
+	# copy pre trained network and training data
+	cp ../src_data/mask_rcnn_coco.h5 ${TRG}
+	cp -r ../src_data/Nucleus ${TRG}
+	
+	# copy test images
+	cp -r ../src_data/testimages ${TRG}
+	
+	# print info
+	echo "TODO:"
+	echo "      * change dir to ${TRG}"
+	echo "      * run: edit ph1_epochs and ph2_epochs in good_nucleus.py"
+	echo "      * run: python good_nucleus.py"
+	
+	
+elif [ ${DST} == "predict" ] ; then
+	echo "predicting..."
+	TRG="${BASE}/${NOW}-predict"
+	echo "TRG = ${TRG}"
+	mkdir -p ${TRG}
+	
+	# populate build dir
+	cp -r mrcnn ${TRG}
+	cp good_nucleus_detect.py ${TRG}
+	cp nucleus.py ${TRG}
+	
+	# copy test images
+	cp -r ../src_data/testimages ${TRG}
+	
+	# print info
+	echo "TODO:"
+	echo "      * copy trained network to ${TRG} (eg mask_rcnn_nucl_dataset_0040.h5)"
+	echo "      * change dir to ${TRG}"
+	echo "      * edit TRAINED_MODEL_APTH in good_nucleus_detect.py"
+	echo "      * run: python good_nucleus_detect.py"
+	
+	
+else
+	echo "unknown destination..."
+	exit 1
+fi
+
